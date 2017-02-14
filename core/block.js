@@ -202,7 +202,7 @@ Blockly.Block.prototype.search = function(searchTerms){
 		console.log("Contains '" + words[i] + "': " + blockText.includes(words[i]));
 	}
 	console.log("Final result: " + result);
-}
+};
 
 /**
  * Obtain a newly created block.
