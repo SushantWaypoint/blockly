@@ -491,7 +491,7 @@ Blockly.Workspace.prototype.searchBlocksByKeywords = function(keywords) {
   // Iterate through every block in the workspace.
   for(var i = 0; i < blocks.length; i++) {
     // If the current block contains all of the keywords searched for...
-    if(blocks[i].search()) {
+    if(blocks[i].search(keywords)) {
       results.push(blocks[i]);
     }
   }
