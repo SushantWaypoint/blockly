@@ -667,8 +667,40 @@ Blockly.Toolbox.TreeSeparator = function(config) {
 goog.inherits(Blockly.Toolbox.TreeSeparator, Blockly.Toolbox.TreeNode);
 
 
+/**Go through tree recursively and add blocks to the searchNode*/
+Blockly.Toolbox.prototype.addSearchBlocks = function(treeIn, searchNode){
+	if(!treeIn.hasChildren()) return;
+	for(var i = 0; i < treeIn.getChildren().length; i++){
+		var childIn = treeIn.getChildren()[i];
+		
+		console.log(childIn.getHtml().toUpperCase());
+		if(childIn.getHtml().toUpperCase() == "SEARCH") continue;	
+		
+		if(childIn.blocks && childIn.blocks.length > 0){
+			console.log("Length of block array" + childIn.blocks.length);
+			for (var j = 0; j < childIn.blocks.length; j++) {
+				searchNode.blocks.push(childIn.blocks[j]);
+				console.log("Pushed " + childIn.blocks[j]);
+			}
+		}
+		this.addSearchBlocks(childIn, searchNode);
+	}
+};
 
-
+/**Find node for SEARCH category*/
+Blockly.Toolbox.prototype.newSearchFunction = function(treeIn) {
+	var searchNode = {};
+	for (var i = 0; i < treeIn.getChildren().length; i++) {
+		console.log("Hello " + treeIn.getChildren()[i].getHtml().toUpperCase());
+		if ((treeIn.getChildren()[i].getHtml().toUpperCase()) == "SEARCH"){
+			searchNode = treeIn.getChildren()[i];
+			console.log("Condition is true");
+			break;
+		}
+	}
+	searchNode.blocks = [];
+	this.addSearchBlocks(treeIn,searchNode);
+};
 
 //** NEW SEARCH FUNCTION */
 /*Blockly.Toolbox.prototype.newSearchFunction = function(openNode) {
@@ -714,40 +746,4 @@ goog.inherits(Blockly.Toolbox.TreeSeparator, Blockly.Toolbox.TreeNode);
 	}
 return openNode;
 };*/
-
-/**Go through tree recursively and add blocks to the searchNode*/
-Blockly.Toolbox.prototype.addSearchBlocks = function(treeIn, searchNode){
-	for(var i = 0; i < treeIn.getChildren().length; i++){
-		var childIn = treeIn.getChildren()[i];
-		
-		console.log(childIn.getHtml().toUpperCase());
-		if(childIn.getHtml().toUpperCase() == "SEARCH") continue;	
-		
-		if(childIn.blocks && childIn.blocks.length > 0){
-			console.log("Length of block array" + childIn.blocks.length);
-			for (var j = 0; j < childIn.blocks.length; j++) {
-				searchNode.blocks.push(childIn.blocks[j]);
-				console.log("Pushed " + childIn.blocks[j]);
-			}
-		}
-		if(childIn.getChildren()){
-			this.addSearchBlocks(childIn, searchNode);
-		}
-	}
-};
-
-/**Find node for SEARCH category*/
-Blockly.Toolbox.prototype.newSearchFunction = function(treeIn) {
-	var searchNode = {};
-	for (var i = 0; i < treeIn.getChildren().length; i++) {
-		console.log("Hello " + treeIn.getChildren()[i].getHtml().toUpperCase());
-		if ((treeIn.getChildren()[i].getHtml().toUpperCase()) == "SEARCH"){
-			searchNode = treeIn.getChildren()[i];
-			console.log("Condition is true");
-			break;
-		}
-	}
-	searchNode.blocks = [];
-	this.addSearchBlocks(treeIn,searchNode);
-};
 
