@@ -721,7 +721,8 @@ Blockly.Flyout.prototype.hide = function() {
  * @param {!Array|string} xmlList List of blocks to show.
  *     Variables and procedures have a custom set of blocks.
  */
-Blockly.Flyout.prototype.show = function(xmlList) {
+Blockly.Flyout.prototype.show = function(node) {
+    var xmlList = node.blocks;
   this.workspace_.setResizesEnabled(false);
   this.hide();
   this.clearOldBlocks_();
@@ -734,6 +735,11 @@ Blockly.Flyout.prototype.show = function(xmlList) {
     // Special category for procedures.
     xmlList =
         Blockly.Procedures.flyoutCategory(this.workspace_.targetWorkspace);
+  } else if(xmlList == Blockly.Search.NAME_TYPE) {
+    // Special category for procedures.
+    xmlList =
+        Blockly.Search.flyoutCategory(node, this.workspace_.targetWorkspace);
+      
   }
 
   this.setVisible(true);
