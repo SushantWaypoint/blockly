@@ -739,7 +739,8 @@ Blockly.Flyout.prototype.show = function(node) {
     // Special category for procedures.
     xmlList =
         Blockly.Search.flyoutCategory(node, this.workspace_.targetWorkspace);
-      
+        var newArray = xmlList.concat(Blockly.Variables.flyoutCategory(this.workspace_.targetWorkspace));
+        xmlList = newArray.concat(Blockly.Procedures.flyoutCategory(this.workspace_.targetWorkspace));
   }
 
   this.setVisible(true);
