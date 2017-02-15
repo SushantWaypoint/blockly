@@ -702,48 +702,4 @@ Blockly.Toolbox.prototype.newSearchFunction = function(treeIn) {
 	this.addSearchBlocks(treeIn,searchNode);
 };
 
-//** NEW SEARCH FUNCTION */
-/*Blockly.Toolbox.prototype.newSearchFunction = function(openNode) {
-	var searchNode = {};
-	for (var i = 0; i < openNode.getChildren().length; i++) {
-		console.log("Hello " + openNode.getChildren()[i].getHtml().toUpperCase());
-		if ((openNode.getChildren()[i].getHtml().toUpperCase()) == "SEARCH"){
-			searchNode = openNode.getChildren()[i];
-			console.log("Condition is true");
-			break;
-		}
-	}
-	if (searchNode){
-		searchNode.blocks = [];
-		console.log("");
-
-		for (var i  = 0; i < openNode.getChildren().length; i++) {
-			console.log(openNode.getChildren()[i].getHtml());
-			if(openNode.getChildren()[i].getHtml().toUpperCase() == "SEARCH") continue;
-			
-			if (openNode.getChildren()[i].blocks){
-				console.log("Length of block array" + openNode.getChildren()[i].blocks.length);
-				for (var j = 0; j < openNode.getChildren()[i].blocks.length; j++) {
-					searchNode.blocks.push(openNode.getChildren()[i].blocks[j]);
-					console.log("Pushed1 " + openNode.getChildren()[i].blocks[j]);
-				}
-			}
-
-			else {
-				searchNode.blocks.push(openNode.getChildren()[i]);
-				console.log("Pushed2 " + openNode.getChildren()[i]);
-			}
-		}
-	} 
-
-	if (searchNode.blocks) {
-		for (var i = 0; i < searchNode.blocks.length; i++) {
-			//console.log(seachNode.blocks[i].getAttribute("type"));
-		}
-	}
-	else {
-		console.log("searchNode.blocks appears to be empty");
-	}
-return openNode;
-};*/
 
