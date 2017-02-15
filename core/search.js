@@ -40,6 +40,30 @@ goog.require('goog.ui.tree.TreeControl');
  */
 Blockly.Search.NAME_TYPE = 'SEARCH';
 
+Blockly.Search = function(node,workspace){
+	this.SEARCH_TERM = '';
+	
+	this.allBlocks = [];
+	
+	//assemble all blocks in the toolbox
+	var treeIn = node.getParent();
+	var searchNode = {};
+	for (var i = 0; i < treeIn.getChildren().length; i++) {
+		console.log("Hello " + treeIn.getChildren()[i].getHtml().toUpperCase());
+		if ((treeIn.getChildren()[i].getHtml().toUpperCase()) == "SEARCH"){
+			searchNode = treeIn.getChildren()[i];
+			console.log("Condition is true");
+			break;
+		}
+	}
+	searchNode.blocks = [];
+	this.addSearchBlocks(treeIn,searchNode);
+	
+	for(var i = 0; i < searchNode.blocks.length; i++){
+		
+	}
+};
+
 /**Go through tree recursively and add blocks to the searchNode*/
 Blockly.Search.addSearchBlocks = function(treeIn, searchNode){
 	if(!treeIn.hasChildren()) return;
@@ -47,7 +71,8 @@ Blockly.Search.addSearchBlocks = function(treeIn, searchNode){
 		var childIn = treeIn.getChildren()[i];
 		
 		console.log(childIn.getHtml().toUpperCase());
-		if(childIn.getHtml().toUpperCase() == "SEARCH") continue;	
+		var childName = childIn.getHtml().toUpperCase();
+		if(childName == "SEARCH" || childName == "VARIABLE" || childName == "PROCEDURE") continue;	
 		
 		if(childIn.blocks && childIn.blocks.length > 0){
 			console.log("Length of block array" + childIn.blocks.length);
