@@ -40,46 +40,39 @@ goog.require('goog.ui.tree.TreeControl');
  */
 Blockly.Search.NAME_TYPE = 'SEARCH';
 
+/**Go through tree recursively and add blocks to the searchNode*/
+Blockly.Search.addSearchBlocks = function(treeIn, searchNode){
+	if(!treeIn.hasChildren()) return;
+	for(var i = 0; i < treeIn.getChildren().length; i++){
+		var childIn = treeIn.getChildren()[i];
+		
+		console.log(childIn.getHtml().toUpperCase());
+		if(childIn.getHtml().toUpperCase() == "SEARCH") continue;	
+		
+		if(childIn.blocks && childIn.blocks.length > 0){
+			console.log("Length of block array" + childIn.blocks.length);
+			for (var j = 0; j < childIn.blocks.length; j++) {
+				searchNode.blocks.push(childIn.blocks[j]);
+				console.log("Pushed " + childIn.blocks[j]);
+			}
+		}
+		this.addSearchBlocks(childIn, searchNode);
+	}
+};
+
+/**Find node for SEARCH category*/
 Blockly.Search.flyoutCategory = function(node, workspace) {
-    console.log("We made it");
-    var openNode = node.getParent();
+    var treeIn = node.getParent();
 	var searchNode = {};
-	for (var i = 0; i < openNode.getChildren().length; i++) {
-		console.log("Hello " + openNode.getChildren()[i].getHtml().toUpperCase());
-		if ((openNode.getChildren()[i].getHtml().toUpperCase()) == "SEARCH"){
-			searchNode = openNode.getChildren()[i];
+	for (var i = 0; i < treeIn.getChildren().length; i++) {
+		console.log("Hello " + treeIn.getChildren()[i].getHtml().toUpperCase());
+		if ((treeIn.getChildren()[i].getHtml().toUpperCase()) == "SEARCH"){
+			searchNode = treeIn.getChildren()[i];
 			console.log("Condition is true");
 			break;
 		}
 	}
-	if (searchNode){
-		searchNode.blocks = [];
-		console.log("");
-
-		for (var i  = 0; i < openNode.getChildren().length; i++) {
-			
-			if (openNode.getChildren()[i].blocks){
-				console.log("Length of block array" + openNode.getChildren()[i].blocks.length);
-				for (var j = 0; j < openNode.getChildren()[i].blocks.length; j++) {
-					searchNode.blocks.push(openNode.getChildren()[i].blocks[j]);
-					console.log("Pushed " + openNode.getChildren()[i].blocks[j]);
-				}
-			}
-
-			else {
-				searchNode.blocks.push(openNode.getChildren()[i]);
-				console.log("Pushed " + openNode.getChildren()[i]);
-			}
-		}
-	} 
-
-	if (searchNode.blocks) {
-		for (var i = 0; i < searchNode.blocks.length; i++) {
-			//console.log(seachNode.blocks[i].getAttribute("type"));
-		}
-	}
-	else {
-		console.log("searchNode.blocks appears to be empty");
-	}
-return searchNode.blocks;
+	searchNode.blocks = [];
+	this.addSearchBlocks(treeIn,searchNode);
+        return searchNode.blocks;
 };

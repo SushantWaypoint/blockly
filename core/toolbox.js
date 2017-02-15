@@ -295,12 +295,12 @@ Blockly.Toolbox.prototype.populate_ = function(newTree) {
  * @private
  */
 Blockly.Toolbox.prototype.syncTrees_ = function(treeIn, treeOut, pathToMedia) {
-	for(var i = 0, childIn; childIn = treeIn.childNodes[i]; i++) {
-		if(childIn.tagName) {
-			if(childIn.tagName.toUpperCase() == 'BLOCK') {
-			}
-		}
-	}
+//	for(var i = 0, childIn; childIn = treeIn.childNodes[i]; i++) {
+//		if(childIn.tagName) {
+//			if(childIn.tagName.toUpperCase() == 'BLOCK') {
+//			}
+//		}
+//	}
   var openNode = null;
   var lastElement = null;
   for (var i = 0, childIn; childIn = treeIn.childNodes[i]; i++) {
