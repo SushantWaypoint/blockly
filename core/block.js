@@ -163,21 +163,26 @@ Blockly.Block = function(workspace, prototypeName, opt_id) {
   this.search("text print");
 };
 
-/**Search function for a block*/
+/**
+ * Search for the given keywords in the block's tooltip and fields.
+ * @param {!Array.<string>} searchTerms Array of keywords to search for.
+ * @return {boolean} True if all keywords in searchTerms were found in block.
+ */
 Blockly.Block.prototype.search = function(searchTerms){
-	searchTerms = searchTerms.trim().toLowerCase();
-	var words = searchTerms.split(" ");
+	//searchTerms = searchTerms.trim().toLowerCase();
+	//var words = searchTerms.split(" ");
+  var words = searchTerms;
 	var blockText = "";
-	
+
 	//console.log("\nType: " + this.type);
 	blockText += this.type.toLowerCase();
-	
-	if(this.tooltip instanceof Function) 
+
+	if(this.tooltip instanceof Function)
 		//console.log(this.tooltip());
 		blockText += " " + this.tooltip().toLowerCase();
 	else //console.log(this.tooltip);
 		blockText += " " + this.tooltip.toLowerCase();
-	
+
 	for (var i = 0, input; input = this.inputList[i]; i++) {
 		if(typeof input.name != "undefined")
 			blockText += " " + input.name.toLowerCase();
@@ -185,23 +190,25 @@ Blockly.Block.prototype.search = function(searchTerms){
 		for (var j = 0, field; field = input.fieldRow[j]; j++) {
 			if(typeof field.name != "undefined")
 				blockText += " " + field.name.toLowerCase();
-			blockText += " " + field.getText().toLowerCase();			
+			blockText += " " + field.getText().toLowerCase();
 			//console.log("Name: " + field.name);
 			//console.log("Text: " + field.getText());
-			
-			if(!(field instanceof Blockly.FieldImage)) 
+
+			if(!(field instanceof Blockly.FieldImage))
 				blockText += " " + field.getValue().toLowerCase();
 				//console.log("Value: " + field.getValue());
 			}
 		}
 	console.log(blockText);
-	
+
 	var result = true;
 	for(var i = 0; i < words.length; i++){
 		result = result && blockText.includes(words[i]);
 		console.log("Contains '" + words[i] + "': " + blockText.includes(words[i]));
 	}
 	console.log("Final result: " + result);
+
+  return result;
 };
 
 /**
