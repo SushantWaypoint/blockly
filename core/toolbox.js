@@ -277,7 +277,6 @@ Blockly.Toolbox.prototype.populate_ = function(newTree) {
   this.hasColours_ = false;
   var openNode =
     this.syncTrees_(newTree, this.tree_, this.workspace_.options.pathToMedia);
- openNode = this.newSearchFunction(this.tree_);
   if (this.tree_.blocks.length) {
     throw 'Toolbox cannot have both blocks and categories in the root level.';
   }
@@ -457,7 +456,7 @@ Blockly.Toolbox.prototype.getClientRect = function() {
 Blockly.Toolbox.prototype.refreshSelection = function() {
   var selectedItem = this.tree_.getSelectedItem();
   if (selectedItem && selectedItem.blocks) {
-    this.flyout_.show(selectedItem.blocks);
+    this.flyout_.show(selectedItem);
   }
 };
 
@@ -544,7 +543,7 @@ Blockly.Toolbox.TreeControl.prototype.setSelectedItem = function(node) {
   var oldNode = this.getSelectedItem();
   goog.ui.tree.TreeControl.prototype.setSelectedItem.call(this, node);
   if (node && node.blocks && node.blocks.length) {
-    toolbox.flyout_.show(node.blocks);
+    toolbox.flyout_.show(node);
     // Scroll the flyout to the top if the category has changed.
     if (toolbox.lastCategory_ != node) {
       toolbox.flyout_.scrollToStart();
@@ -665,50 +664,3 @@ Blockly.Toolbox.TreeSeparator = function(config) {
   Blockly.Toolbox.TreeNode.call(this, null, '', config);
 };
 goog.inherits(Blockly.Toolbox.TreeSeparator, Blockly.Toolbox.TreeNode);
-
-
-
-
-
-//** NEW SEARCH FUNCTION */
-Blockly.Toolbox.prototype.newSearchFunction = function(openNode) {
-	var searchNode = {};
-	for (var i = 0; i < openNode.getChildren().length; i++) {
-		console.log("Hello " + openNode.getChildren()[i].getHtml().toUpperCase());
-		if ((openNode.getChildren()[i].getHtml().toUpperCase()) == "SEARCH"){
-			searchNode = openNode.getChildren()[i];
-			console.log("Condition is true");
-			break;
-		}
-	}
-	if (searchNode){
-		searchNode.blocks = [];
-		console.log("");
-
-		for (var i  = 0; i < openNode.getChildren().length; i++) {
-			
-			if (openNode.getChildren()[i].blocks){
-				console.log("Length of block array" + openNode.getChildren()[i].blocks.length);
-				for (var j = 0; j < openNode.getChildren()[i].blocks.length; j++) {
-					searchNode.blocks.push(openNode.getChildren()[i].blocks[j]);
-					console.log("Pushed " + openNode.getChildren()[i].blocks[j]);
-				}
-			}
-
-			else {
-				searchNode.blocks.push(openNode.getChildren()[i]);
-				console.log("Pushed " + openNode.getChildren()[i]);
-			}
-		}
-	} 
-
-	if (searchNode.blocks) {
-		for (var i = 0; i < searchNode.blocks.length; i++) {
-			//console.log(seachNode.blocks[i].getAttribute("type"));
-		}
-	}
-	else {
-		console.log("searchNode.blocks appears to be empty");
-	}
-return openNode;
-};

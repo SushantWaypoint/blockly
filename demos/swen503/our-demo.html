@@ -3,9 +3,27 @@
 <head>
   <meta charset="utf-8">
   <title>Blockly Demo: Toolbox</title>
-  <script src="../../blockly_compressed.js"></script>
-  <script src="../../blocks_compressed.js"></script>
-  <script src="../../msg/js/en.js"></script>
+<script src = "../../blockly_uncompressed.js"></script>
+<script src="../../blocks/logic.js"></script>
+<script src="../../blocks/loops.js"></script>
+<script src="../../blocks/math.js"></script>
+<script src="../../blocks/text.js"></script>
+<script src="../../blocks/lists.js"></script>
+<script src="../../blocks/colour.js"></script>
+<script src="../../blocks/variables.js"></script>
+<script src="../../blocks/procedures.js"></script>
+
+<script src="../../generators/javascript.js"></script>
+<script src="../../generators/javascript/logic.js"></script>
+<script src="../../generators/javascript/loops.js"></script>
+<script src="../../generators/javascript/math.js"></script>
+<script src="../../generators/javascript/text.js"></script>
+<script src="../../generators/javascript/lists.js"></script>
+<script src="../../generators/javascript/colour.js"></script>
+<script src="../../generators/javascript/variables.js"></script>
+<script src="../../generators/javascript/procedures.js"></script>
+
+<script src="../../msg/messages.js"></script>
   <style>
     body {
       background-color: #fff;
@@ -28,7 +46,7 @@
   <div id="blocklyDiv" style="height: 600px; width: 800px;"></div>
 
   <xml id="toolbox" style="display: none">
-    <category name="Search" type="field_input"></category>
+    <category name="Search" custom="SEARCH"></category>
     <category name="Logic">
       <category name="If">
         <block type="controls_if"></block>
