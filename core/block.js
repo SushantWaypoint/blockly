@@ -160,7 +160,6 @@ Blockly.Block = function(workspace, prototypeName, opt_id) {
     this.onchangeWrapper_ = this.onchange.bind(this);
     this.workspace.addChangeListener(this.onchangeWrapper_);
   }
-  this.search("text print");
 };
 
 /**
@@ -174,39 +173,51 @@ Blockly.Block.prototype.search = function(searchTerms){
   var words = searchTerms;
 	var blockText = "";
 
-	//console.log("\nType: " + this.type);
 	blockText += this.type.toLowerCase();
 
-	if(this.tooltip instanceof Function)
-		//console.log(this.tooltip());
-		blockText += " " + this.tooltip().toLowerCase();
-	else //console.log(this.tooltip);
-		blockText += " " + this.tooltip.toLowerCase();
+  // Append this block's tooltip to blockText.
+  // May need to use tooltip, tooltip() or tooltip()() to get it.
 
+  // If tooltip does not refer to a function, append it to blockText.
+  if (!(this.tooltip instanceof Function))
+    blockText += " " + this.tooltip.toLowerCase();
+  // Else, tooltip refers to a function, so call it.
+  // If tooltip() does not refer to another function, append it to blockText.
+  else if (!(this.tooltip() instanceof Function))
+    blockText += " " + this.tooltip().toLowerCase();
+  // Else, tooltip() refers to another function, so call it with tooltip()().
+  // This is the case for math_number blocks inside other blocks.
+  // If tooltip()() does not refer to another function, append it to blockText.
+  else if (!(this.tooltip()() instanceof Function))
+    blockText += " " + this.tooltip()().toLowerCase();
+
+  //
 	for (var i = 0, input; input = this.inputList[i]; i++) {
-		if(typeof input.name != "undefined")
+		if (typeof input.name != "undefined")
 			blockText += " " + input.name.toLowerCase();
-		//console.log("Input name: " + input.name);
+
 		for (var j = 0, field; field = input.fieldRow[j]; j++) {
-			if(typeof field.name != "undefined")
+			if (typeof field.name != "undefined")
 				blockText += " " + field.name.toLowerCase();
+
 			blockText += " " + field.getText().toLowerCase();
 			//console.log("Name: " + field.name);
 			//console.log("Text: " + field.getText());
 
-			if(!(field instanceof Blockly.FieldImage))
+			if (!(field instanceof Blockly.FieldImage))
 				blockText += " " + field.getValue().toLowerCase();
 				//console.log("Value: " + field.getValue());
-			}
 		}
-	console.log(blockText);
+	}
 
-	var result = true;
+	//console.log("blocktext: "+blockText);
+
+  var result = true;
 	for(var i = 0; i < words.length; i++){
 		result = result && blockText.includes(words[i]);
-		console.log("Contains '" + words[i] + "': " + blockText.includes(words[i]));
+		//console.log("Contains '" + words[i] + "': " + blockText.includes(words[i]));
 	}
-	console.log("Final result: " + result);
+	//console.log("Final result: " + result);
 
   return result;
 };
