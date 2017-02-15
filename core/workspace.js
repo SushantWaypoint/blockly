@@ -479,6 +479,26 @@ Blockly.Workspace.prototype.getBlockById = function(id) {
 };
 
 /**
+ * Search for a block in the workspace using one or more keywords.
+ * Uses the Block.search() function on each block.
+ * @param {!Array.<string>} keywords Array of keywords to search for
+ * @return {!Array.<!Blockly.Block>} Array of blocks containing the keywords
+ */
+Blockly.Workspace.prototype.searchBlocksByKeywords = function(keywords) {
+  var results = [];
+  var blocks = this.getAllBlocks();
+
+  // Iterate through every block in the workspace.
+  for(var i = 0; i < blocks.length; i++) {
+    // If the current block contains all of the keywords searched for...
+    if(blocks[i].search()) {
+      results.push(blocks[i]);
+    }
+  }
+  return results;
+};
+
+/**
  * Database of all workspaces.
  * @private
  */
