@@ -202,8 +202,7 @@ Blockly.Toolbox.prototype.init = function() {
   }
   this.addColour_();
   this.position();
-  Blockly.Search.init(this.tree_,workspace);
-  Blockly.Search.setSearchTerms("text print");
+  Blockly.Search.init(workspace, this);
 };
 
 /**

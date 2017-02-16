@@ -738,11 +738,12 @@ Blockly.Flyout.prototype.show = function(node) {
     xmlList =
         Blockly.Procedures.flyoutCategory(this.workspace_.targetWorkspace);
   } else if(xmlList == Blockly.Search.NAME_TYPE) {
-    // Special category for procedures.
+    // Special category for searches.
     xmlList =
         Blockly.Search.flyoutCategory(node, this.workspace_.targetWorkspace);
-        var newArray = xmlList.concat(Blockly.Variables.flyoutCategory(this.workspace_.targetWorkspace));
-        xmlList = newArray.concat(Blockly.Procedures.flyoutCategory(this.workspace_.targetWorkspace));
+//        var newArray = xmlList.concat(Blockly.Variables.flyoutCategory(this.workspace_.targetWorkspace));
+//        xmlList = newArray.concat(Blockly.Procedures.flyoutCategory(this.workspace_.targetWorkspace));
+	node.blocks = Blockly.Search.NAME_TYPE;
   }
 
   this.setVisible(true);

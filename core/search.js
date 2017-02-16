@@ -40,11 +40,10 @@ goog.require('goog.ui.tree.TreeControl');
  */
 Blockly.Search.NAME_TYPE = 'SEARCH';
 Blockly.Search.SEARCH_TERMS = [];
-Blockly.Search.allBlocks = [];
 Blockly.Search.button = {};
 Blockly.Search.activeSearch = false;
 
-Blockly.Search.init = function(treeIn,workspace){	
+Blockly.Search.init = function(workspace, toolbox){	
 	console.log("Test");
         
         //create search button
@@ -54,37 +53,12 @@ Blockly.Search.init = function(treeIn,workspace){
 
         workspace.registerButtonCallback('START_SEARCH', function(button) {
                 var searchTerm = Blockly.Search.startSearch(button.getTargetWorkspace());
+                console.log("Search Term: " + searchTerm);
                 if(searchTerm) {
-                    this.setSearchTerms(searchTerm);
+                    Blockly.Search.setSearchTerms(searchTerm);
+                    toolbox.refreshSelection();
                 }
         });
-	
-	//assemble all blocks in the toolbox
-	var searchNode = {};
-	for (var i = 0; i < treeIn.getChildren().length; i++) {
-		console.log("Hello " + treeIn.getChildren()[i].getHtml().toUpperCase());
-		if ((treeIn.getChildren()[i].getHtml().toUpperCase()) == "SEARCH"){
-			searchNode = treeIn.getChildren()[i];
-			console.log("Condition is true");
-			break;
-		}
-	}
-	searchNode.blocks = [];
-	this.addSearchBlocks(treeIn,searchNode);
-	console.log(searchNode.blocks.length);
-	for(var i = 0; i < searchNode.blocks.length; i++){
-		console.log(searchNode.blocks[i] + " " + i);
-		if(searchNode.blocks[i].tagName) console.log(searchNode.blocks[i].tagName);
-	}
-	
-	for(var i = 0; i < searchNode.blocks.length; i++){
-		if(searchNode.blocks[i].tagName)
-			var tagName = searchNode.blocks[i].tagName.toUpperCase();
-		console.log(tagName + " " + i);
-		if(tagName == 'BLOCK')
-			this.allBlocks.push(Blockly.Xml.domToInvisibleBlock(searchNode.blocks[i],workspace));
-	}
-	console.log(this.allBlocks.length);
 };
 
 /**Go through tree recursively and add blocks to the searchNode*/
@@ -127,17 +101,45 @@ Blockly.Search.flyoutCategory = function(node, workspace) {
   searchNode.blocks.push(button);
 	this.addSearchBlocks(treeIn,searchNode);
         return searchNode.blocks;*/
+	var treeIn = node.getParent();
+	var searchNode = {};
+	for (var i = 0; i < treeIn.getChildren().length; i++) {
+		console.log("Hello " + treeIn.getChildren()[i].getHtml().toUpperCase());
+		if ((treeIn.getChildren()[i].getHtml().toUpperCase()) == "SEARCH"){
+			searchNode = treeIn.getChildren()[i];
+			console.log("Condition is true");
+			break;
+		}
+	}
+	searchNode.blocks = [];
+	this.addSearchBlocks(treeIn,searchNode);
+	console.log(searchNode.blocks.length);
+	for(var i = 0; i < searchNode.blocks.length; i++){
+		console.log(searchNode.blocks[i] + " " + i);
+		if(searchNode.blocks[i].tagName) console.log(searchNode.blocks[i].tagName);
+	}
+	
+	var allBlocks = [];
+	
+	for(var i = 0; i < searchNode.blocks.length; i++){
+		if(searchNode.blocks[i].tagName)
+			var tagName = searchNode.blocks[i].tagName.toUpperCase();
+		console.log(tagName + " " + i);
+		if(tagName == 'BLOCK')
+			allBlocks.push(Blockly.Xml.domToInvisibleBlock(searchNode.blocks[i],workspace));
+	}
 		
 	var foundBlocks = [];
         foundBlocks.push(this.button);
 	console.log("Test");
 	
-        if(activeSearch){
-            for(var i = 0; i < this.allBlocks.length; i++){
-                    if(this.allBlocks[i].search(SEARCH_TERMS))
+        if(this.activeSearch){
+            for(var i = 0; i < allBlocks.length; i++){
+                    if(allBlocks[i].search(this.SEARCH_TERMS))
                             foundBlocks.push(Blockly.Xml.blockToDom(allBlocks[i]));
+                    allBlocks[i].dispose(false);
             }
-            activeSearch = false;
+            this.activeSearch = false;
         }
 	return foundBlocks;
 };
@@ -145,13 +147,13 @@ Blockly.Search.flyoutCategory = function(node, workspace) {
 Blockly.Search.startSearch = function(workspace) {
     var text = window.prompt("Enter search phrase", "");
     if(text) {
-        this.activeSearch = true;
         return text;
     }
     return null;
 }
 
 Blockly.Search.setSearchTerms = function(search){
+    this.activeSearch = true;
 	this.SEARCH_TERMS = search.trim().toLowerCase().split(" ");
 	console.log(this.SEARCH_TERMS);
 };
