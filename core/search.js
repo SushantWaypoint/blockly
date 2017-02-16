@@ -41,9 +41,23 @@ goog.require('goog.ui.tree.TreeControl');
 Blockly.Search.NAME_TYPE = 'SEARCH';
 Blockly.Search.SEARCH_TERMS = [];
 Blockly.Search.allBlocks = [];
+Blockly.Search.button = {};
+Blockly.Search.activeSearch = false;
 
 Blockly.Search.init = function(treeIn,workspace){	
 	console.log("Test");
+        
+        //create search button
+        this.button = goog.dom.createDom('button');
+        this.button.setAttribute('text', "Search...");
+        this.button.setAttribute('callbackKey', 'START_SEARCH');
+
+        workspace.registerButtonCallback('START_SEARCH', function(button) {
+                var searchTerm = Blockly.Search.startSearch(button.getTargetWorkspace());
+                if(searchTerm) {
+                    this.setSearchTerms(searchTerm);
+                }
+        });
 	
 	//assemble all blocks in the toolbox
 	var searchNode = {};
@@ -108,13 +122,6 @@ Blockly.Search.flyoutCategory = function(node, workspace) {
 	}
 	
     searchNode.blocks = [];
-
-    var button = goog.dom.createDom('button');
-    button.setAttribute('text', "Search...");
-    button.setAttribute('callbackKey', 'START_SEARCH');
-
-    workspace.registerButtonCallback('START_SEARCH', function(button) {
-        Blockly.Search.startSearch(button.getTargetWorkspace());
     });
     
   searchNode.blocks.push(button);
@@ -122,14 +129,27 @@ Blockly.Search.flyoutCategory = function(node, workspace) {
         return searchNode.blocks;*/
 		
 	var foundBlocks = [];
+        foundBlocks.push(this.button);
 	console.log("Test");
 	
-	for(var i = 0; i < this.allBlocks.length; i++){
-		if(this.allBlocks[i].search(SEARCH_TERMS))
-			foundBlocks.push(Blockly.Xml.blockToDom(allBlocks[i]));
-	}
+        if(activeSearch){
+            for(var i = 0; i < this.allBlocks.length; i++){
+                    if(this.allBlocks[i].search(SEARCH_TERMS))
+                            foundBlocks.push(Blockly.Xml.blockToDom(allBlocks[i]));
+            }
+            activeSearch = false;
+        }
 	return foundBlocks;
 };
+
+Blockly.Search.startSearch = function(workspace) {
+    var text = window.prompt("Enter search phrase", "");
+    if(text) {
+        this.activeSearch = true;
+        return text;
+    }
+    return null;
+}
 
 Blockly.Search.setSearchTerms = function(search){
 	this.SEARCH_TERMS = search.trim().toLowerCase().split(" ");
