@@ -160,7 +160,6 @@ Blockly.Block = function(workspace, prototypeName, opt_id) {
     this.onchangeWrapper_ = this.onchange.bind(this);
     this.workspace.addChangeListener(this.onchangeWrapper_);
   }
-  this.search("text print");
 };
 
 /**
