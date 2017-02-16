@@ -726,6 +726,8 @@ Blockly.Flyout.prototype.show = function(node) {
   this.workspace_.setResizesEnabled(false);
   this.hide();
   this.clearOldBlocks_();
+  console.log("Check");
+  console.log(xmlList);
 
   if (xmlList == Blockly.Variables.NAME_TYPE) {
     // Special category for variables.

@@ -39,6 +39,39 @@ goog.require('goog.ui.tree.TreeControl');
  * Category to separate procedure names from variables and generated functions.
  */
 Blockly.Search.NAME_TYPE = 'SEARCH';
+Blockly.Search.SEARCH_TERMS = [];
+Blockly.Search.allBlocks = [];
+
+Blockly.Search.init = function(treeIn,workspace){	
+	console.log("Test");
+	
+	//assemble all blocks in the toolbox
+	var searchNode = {};
+	for (var i = 0; i < treeIn.getChildren().length; i++) {
+		console.log("Hello " + treeIn.getChildren()[i].getHtml().toUpperCase());
+		if ((treeIn.getChildren()[i].getHtml().toUpperCase()) == "SEARCH"){
+			searchNode = treeIn.getChildren()[i];
+			console.log("Condition is true");
+			break;
+		}
+	}
+	searchNode.blocks = [];
+	this.addSearchBlocks(treeIn,searchNode);
+	console.log(searchNode.blocks.length);
+	for(var i = 0; i < searchNode.blocks.length; i++){
+		console.log(searchNode.blocks[i] + " " + i);
+		if(searchNode.blocks[i].tagName) console.log(searchNode.blocks[i].tagName);
+	}
+	
+	for(var i = 0; i < searchNode.blocks.length; i++){
+		if(searchNode.blocks[i].tagName)
+			var tagName = searchNode.blocks[i].tagName.toUpperCase();
+		console.log(tagName + " " + i);
+		if(tagName == 'BLOCK')
+			this.allBlocks.push(Blockly.Xml.domToInvisibleBlock(searchNode.blocks[i],workspace));
+	}
+	console.log(this.allBlocks.length);
+};
 
 /**Go through tree recursively and add blocks to the searchNode*/
 Blockly.Search.addSearchBlocks = function(treeIn, searchNode){
@@ -47,7 +80,8 @@ Blockly.Search.addSearchBlocks = function(treeIn, searchNode){
 		var childIn = treeIn.getChildren()[i];
 		
 		console.log(childIn.getHtml().toUpperCase());
-		if(childIn.getHtml().toUpperCase() == "SEARCH") continue;	
+		var childName = childIn.getHtml().toUpperCase();
+		if(childName == "SEARCH" || childName == "VARIABLES" || childName == "FUNCTIONS") continue;	
 		
 		if(childIn.blocks && childIn.blocks.length > 0){
 			console.log("Length of block array" + childIn.blocks.length);
@@ -62,7 +96,7 @@ Blockly.Search.addSearchBlocks = function(treeIn, searchNode){
 
 /**Find node for SEARCH category*/
 Blockly.Search.flyoutCategory = function(node, workspace) {
-    var treeIn = node.getParent();
+/*    var treeIn = node.getParent();
 	var searchNode = {};
 	for (var i = 0; i < treeIn.getChildren().length; i++) {
 		console.log("Hello " + treeIn.getChildren()[i].getHtml().toUpperCase());
@@ -82,8 +116,22 @@ Blockly.Search.flyoutCategory = function(node, workspace) {
     workspace.registerButtonCallback('START_SEARCH', function(button) {
         Blockly.Search.startSearch(button.getTargetWorkspace());
     });
+    
+  searchNode.blocks.push(button);
+	this.addSearchBlocks(treeIn,searchNode);
+        return searchNode.blocks;*/
+		
+	var foundBlocks = [];
+	console.log("Test");
+	
+	for(var i = 0; i < this.allBlocks.length; i++){
+		if(this.allBlocks[i].search(SEARCH_TERMS))
+			foundBlocks.push(Blockly.Xml.blockToDom(allBlocks[i]));
+	}
+	return foundBlocks;
+};
 
-    searchNode.blocks.push(button);
-    this.addSearchBlocks(treeIn,searchNode);
-    return searchNode.blocks;
+Blockly.Search.setSearchTerms = function(search){
+	this.SEARCH_TERMS = search.trim().toLowerCase().split(" ");
+	console.log(this.SEARCH_TERMS);
 };
