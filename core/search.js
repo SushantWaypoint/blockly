@@ -72,25 +72,18 @@ Blockly.Search.flyoutCategory = function(node, workspace) {
 			break;
 		}
 	}
-	searchNode.blocks = [];
+	
+    searchNode.blocks = [];
 
-  var button = goog.dom.createDom('button');
-  button.setAttribute('text', Blockly.Msg.NEW_SEARCH);
-  button.setAttribute('callbackKey', 'CREATE_SEARCH');
+    var button = goog.dom.createDom('button');
+    button.setAttribute('text', "Search...");
+    button.setAttribute('callbackKey', 'START_SEARCH');
 
-  workspace.registerButtonCallback('CREATE_SEARCH', function(button) {
-    Blockly.Search.createSearch(button.getTargetWorkspace());
-  });
+    workspace.registerButtonCallback('START_SEARCH', function(button) {
+        Blockly.Search.startSearch(button.getTargetWorkspace());
+    });
 
-  searchNode.blocks.push(button);
-	this.addSearchBlocks(treeIn,searchNode);
-        return searchNode.blocks;
+    searchNode.blocks.push(button);
+    this.addSearchBlocks(treeIn,searchNode);
+    return searchNode.blocks;
 };
-
-Blockly.Search.createSearch = function(workspace, opt_callback) {
-  var userChoice = Blockly.prompt("Enter search phrase", "");
-  // search functionality
-          if (opt_callback) {
-            opt_callback(null);
-          }
-  };
