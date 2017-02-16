@@ -40,38 +40,6 @@ goog.require('goog.ui.tree.TreeControl');
  */
 Blockly.Search.NAME_TYPE = 'SEARCH';
 Blockly.Search.SEARCH_TERMS = [];
-Blockly.Search.allBlocks = [];
-
-Blockly.Search.init = function(treeIn,workspace){	
-	console.log("Test");
-	
-	//assemble all blocks in the toolbox
-	var searchNode = {};
-	for (var i = 0; i < treeIn.getChildren().length; i++) {
-		console.log("Hello " + treeIn.getChildren()[i].getHtml().toUpperCase());
-		if ((treeIn.getChildren()[i].getHtml().toUpperCase()) == "SEARCH"){
-			searchNode = treeIn.getChildren()[i];
-			console.log("Condition is true");
-			break;
-		}
-	}
-	searchNode.blocks = [];
-	this.addSearchBlocks(treeIn,searchNode);
-	console.log(searchNode.blocks.length);
-	for(var i = 0; i < searchNode.blocks.length; i++){
-		console.log(searchNode.blocks[i] + " " + i);
-		if(searchNode.blocks[i].tagName) console.log(searchNode.blocks[i].tagName);
-	}
-	
-	for(var i = 0; i < searchNode.blocks.length; i++){
-		if(searchNode.blocks[i].tagName)
-			var tagName = searchNode.blocks[i].tagName.toUpperCase();
-		console.log(tagName + " " + i);
-		if(tagName == 'BLOCK')
-			this.allBlocks.push(Blockly.Xml.domToInvisibleBlock(searchNode.blocks[i],workspace));
-	}
-	console.log(this.allBlocks.length);
-};
 
 /**Go through tree recursively and add blocks to the searchNode*/
 Blockly.Search.addSearchBlocks = function(treeIn, searchNode){
@@ -119,13 +87,40 @@ Blockly.Search.flyoutCategory = function(node, workspace) {
   searchNode.blocks.push(button);
 	this.addSearchBlocks(treeIn,searchNode);
         return searchNode.blocks;*/
+	var treeIn = node.getParent();
+	var searchNode = {};
+	for (var i = 0; i < treeIn.getChildren().length; i++) {
+		console.log("Hello " + treeIn.getChildren()[i].getHtml().toUpperCase());
+		if ((treeIn.getChildren()[i].getHtml().toUpperCase()) == "SEARCH"){
+			searchNode = treeIn.getChildren()[i];
+			console.log("Condition is true");
+			break;
+		}
+	}
+	searchNode.blocks = [];
+	this.addSearchBlocks(treeIn,searchNode);
+	console.log(searchNode.blocks.length);
+	for(var i = 0; i < searchNode.blocks.length; i++){
+		console.log(searchNode.blocks[i] + " " + i);
+		if(searchNode.blocks[i].tagName) console.log(searchNode.blocks[i].tagName);
+	}
+	
+	var allBlocks = [];
+	
+	for(var i = 0; i < searchNode.blocks.length; i++){
+		if(searchNode.blocks[i].tagName)
+			var tagName = searchNode.blocks[i].tagName.toUpperCase();
+		console.log(tagName + " " + i);
+		if(tagName == 'BLOCK')
+			allBlocks.push(Blockly.Xml.domToInvisibleBlock(searchNode.blocks[i],workspace));
+	}
 		
 	var foundBlocks = [];
-	console.log("Test");
 	
-	for(var i = 0; i < this.allBlocks.length; i++){
-		if(this.allBlocks[i].search(SEARCH_TERMS))
+	for(var i = 0; i < allBlocks.length; i++){
+		if(allBlocks[i].search(this.SEARCH_TERMS))
 			foundBlocks.push(Blockly.Xml.blockToDom(allBlocks[i]));
+		allBlocks[i].dispose(false);
 	}
 	return foundBlocks;
 };
