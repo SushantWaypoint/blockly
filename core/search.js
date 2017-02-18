@@ -83,7 +83,7 @@ Blockly.Search.addSearchBlocks = function(treeIn, searchNode){
 };
 
 /**Find node for SEARCH category*/
-Blockly.Search.flyoutCategory = function(node, workspace) {
+Blockly.Search.flyoutCategory = function(node, flyoutWorkspace, workspace) {
 /*    var treeIn = node.getParent();
 	var searchNode = {};
 	for (var i = 0; i < treeIn.getChildren().length; i++) {
@@ -116,6 +116,8 @@ Blockly.Search.flyoutCategory = function(node, workspace) {
 		console.log(searchNode.blocks[i] + " " + i);
 		if(searchNode.blocks[i].tagName) console.log(searchNode.blocks[i].tagName);
 	}
+	var newArray = searchNode.blocks.concat(Blockly.Variables.flyoutCategory(workspace));
+        searchNode.blocks = newArray.concat(Blockly.Procedures.flyoutCategory(workspace));
 	
 	var allBlocks = [];
 	
@@ -124,7 +126,7 @@ Blockly.Search.flyoutCategory = function(node, workspace) {
 			var tagName = searchNode.blocks[i].tagName.toUpperCase();
 		console.log(tagName + " " + i);
 		if(tagName == 'BLOCK')
-			allBlocks.push(Blockly.Xml.domToInvisibleBlock(searchNode.blocks[i], workspace));
+			allBlocks.push(Blockly.Xml.domToInvisibleBlock(searchNode.blocks[i], flyoutWorkspace));
 	}
 		
         
@@ -140,7 +142,7 @@ Blockly.Search.flyoutCategory = function(node, workspace) {
             }
             this.activeSearch = false;
         }
-        workspace.clear();
+        flyoutWorkspace.clear();
 	return foundBlocks;
 };
 
