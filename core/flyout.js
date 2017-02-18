@@ -36,6 +36,7 @@ goog.require('goog.dom');
 goog.require('goog.events');
 goog.require('goog.math.Rect');
 goog.require('goog.userAgent');
+goog.require('goog.ui.tree.TreeNode');
 
 
 /**
@@ -722,7 +723,10 @@ Blockly.Flyout.prototype.hide = function() {
  *     Variables and procedures have a custom set of blocks.
  */
 Blockly.Flyout.prototype.show = function(node) {
-    var xmlList = node.blocks;
+var xmlList = node;
+    if(node instanceof goog.ui.tree.TreeNode) {
+    xmlList = node.blocks;
+    }
   this.workspace_.setResizesEnabled(false);
   this.hide();
   this.clearOldBlocks_();
