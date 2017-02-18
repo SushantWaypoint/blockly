@@ -104,10 +104,8 @@ Blockly.Search.flyoutCategory = function(node, workspace) {
 	var treeIn = node.getParent();
 	var searchNode = {};
 	for (var i = 0; i < treeIn.getChildren().length; i++) {
-		console.log("Hello " + treeIn.getChildren()[i].getHtml().toUpperCase());
 		if ((treeIn.getChildren()[i].getHtml().toUpperCase()) == "SEARCH"){
 			searchNode = treeIn.getChildren()[i];
-			console.log("Condition is true");
 			break;
 		}
 	}
@@ -126,9 +124,10 @@ Blockly.Search.flyoutCategory = function(node, workspace) {
 			var tagName = searchNode.blocks[i].tagName.toUpperCase();
 		console.log(tagName + " " + i);
 		if(tagName == 'BLOCK')
-			allBlocks.push(Blockly.Xml.domToInvisibleBlock(searchNode.blocks[i],workspace));
+			allBlocks.push(Blockly.Xml.domToInvisibleBlock(searchNode.blocks[i], workspace));
 	}
 		
+        
 	var foundBlocks = [];
         foundBlocks.push(this.button);
 	console.log("Test");
@@ -141,6 +140,7 @@ Blockly.Search.flyoutCategory = function(node, workspace) {
             }
             this.activeSearch = false;
         }
+        workspace.clear();
 	return foundBlocks;
 };
 

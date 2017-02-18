@@ -744,7 +744,7 @@ var xmlList = node;
   } else if(xmlList == Blockly.Search.NAME_TYPE) {
     // Special category for searches.
     xmlList =
-        Blockly.Search.flyoutCategory(node, this.workspace_.targetWorkspace);
+        Blockly.Search.flyoutCategory(node, this.workspace_);
 //        var newArray = xmlList.concat(Blockly.Variables.flyoutCategory(this.workspace_.targetWorkspace));
 //        xmlList = newArray.concat(Blockly.Procedures.flyoutCategory(this.workspace_.targetWorkspace));
 	node.blocks = Blockly.Search.NAME_TYPE;
