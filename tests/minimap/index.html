@@ -79,85 +79,89 @@
 
   <p>&rarr; More info on <a href="https://developers.google.com/blockly/guides/configure/web/events">events</a>&hellip;</p>
 
-    <div id="slaveDiv" style="height: 1000px; width: 2000px; -webkit-transform: scale(.2); -moz-transform: scale(.2);
+    
+    
+        
+   
+        
+
+
+        <div id="container">
+
+            <div id="slaveDiv" style="height: 1000px; width: 2000px; -webkit-transform: scale(.2); -moz-transform: scale(.2);
             transform: scale(.2); position:fixed;
 
-            bottom:-170px;
+            bottom:-130px;
             left:50px;
             z-index:99;
             border: 5px solid red;">
 
-        <canvas id="map"style="height: 1000px;  position:fixed;
+                <canvas id="map" style="height: 1000px;  position:fixed;
 
-            bottom:-50px;
-            left:50px;
+
             z-index:99;
             border: 5px solid red;
-            opacity:0.2"></canvas>
-        
-    </div>
-   
+            opacity:0"></canvas>
+
+            </div>
+            <div id="masterDiv" style="height: 1000px; width: 2000px;"></div>
+
+            </div>
 
 
-    <div id="container">
-        <div id="masterDiv" style="height: 1000px; width: 2000px;"></div>
+                <xml id="toolbox" style="display: none">
+                    <block type="controls_if"></block>
+                    <block type="logic_compare"></block>
+                    <block type="controls_repeat_ext"></block>
+                    <block type="math_number"></block>
+                    <block type="math_arithmetic"></block>
+                    <block type="text"></block>
+                    <block type="text_print"></block>
+                    <block type="variables_get"><field name="VAR">i</field></block>
+                    <block type="variables_get"><field name="VAR">j</field></block>
+                    <block type="variables_get"><field name="VAR">k</field></block>
+                </xml>
 
-        <div>
+                <script>
+                    // Inject master workspace.
+                    var masterWorkspace = Blockly.inject('masterDiv',
+                        {
+                            media: '../../media/',
+                            toolbox: document.getElementById('toolbox')
+                        });
+                    // Inject slave workspace.
+                    var slaveWorkspace = Blockly.inject('slaveDiv',
+                        {
+                            media: '../../media/',
+                            readOnly: true
+                        });
+                    // Listen to events on master workspace.
+                    masterWorkspace.addChangeListener(mirrorEvent);
 
-
-            <xml id="toolbox" style="display: none">
-                <block type="controls_if"></block>
-                <block type="logic_compare"></block>
-                <block type="controls_repeat_ext"></block>
-                <block type="math_number"></block>
-                <block type="math_arithmetic"></block>
-                <block type="text"></block>
-                <block type="text_print"></block>
-                <block type="variables_get"><field name="VAR">i</field></block>
-                <block type="variables_get"><field name="VAR">j</field></block>
-                <block type="variables_get"><field name="VAR">k</field></block>
-            </xml>
-
-            <script>
-                // Inject master workspace.
-                var masterWorkspace = Blockly.inject('masterDiv',
-                    {
-                        media: '../../media/',
-                        toolbox: document.getElementById('toolbox')
-                    });
-                // Inject slave workspace.
-                var slaveWorkspace = Blockly.inject('slaveDiv',
-                    {
-                        media: '../../media/',
-                        readOnly: true
-                    });
-                // Listen to events on master workspace.
-                masterWorkspace.addChangeListener(mirrorEvent);
-
-                function mirrorEvent(masterEvent) {
-                    if (masterEvent.type == Blockly.Events.UI) {
-                        return;  // Don't mirror UI events.
+                    function mirrorEvent(masterEvent) {
+                        if (masterEvent.type == Blockly.Events.UI) {
+                            return;  // Don't mirror UI events.
+                        }
+                        // Convert event to JSON.  This could then be transmitted across the net.
+                        var json = masterEvent.toJson();
+                        console.log(json);
+                        // Convert JSON back into an event, then execute it.
+                        var slaveEvent = Blockly.Events.fromJson(json, slaveWorkspace);
+                        slaveEvent.run(true);
                     }
-                    // Convert event to JSON.  This could then be transmitted across the net.
-                    var json = masterEvent.toJson();
-                    console.log(json);
-                    // Convert JSON back into an event, then execute it.
-                    var slaveEvent = Blockly.Events.fromJson(json, slaveWorkspace);
-                    slaveEvent.run(true);
-                }
-            </script>
+                </script>
 
-            <script src="pagemap.min.js"></script>
-            <script>
-                pagemap(document.querySelector('#map'), {
-                    // viewport: document.querySelector('#container'),
-                    interval: 50,
-                    styles: {
-                        div: 'rgba(0,0,0,0.1)'
-                    },
-                    back: 'rgba(255,255,255,1)'
-                });
-            </script>
+                <script src="pagemap.min.js"></script>
+                <script>
+                    pagemap(document.querySelector('#map'), {
+                        // viewport: document.querySelector('#container'),
+                        interval: 50,
+                        styles: {
+                            div: 'rgba(0,0,0,0.1)'
+                        },
+                        back: 'rgba(255,255,255,1)'
+                    });
+                </script>
 
 
 </body>

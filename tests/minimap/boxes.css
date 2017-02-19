@@ -14,14 +14,12 @@ body {
     margin-top: 85px;
     margin-right: 18px;
     position: fixed;
-    
     width: 600px;
     height: 220px;
-
-
     bottom:-570px;
-     left:50px;
-     z-index:99;
+    left:50px;
+    z-index:99;
+     opacity:99;
 }
 
 #container {
@@ -62,3 +60,5 @@ body {
     background-size: 100px 100px;
     background-position: 0 0, 50px 50px
 }
+
+
