@@ -69,11 +69,12 @@ Blockly.Search.addSearchBlocks = function(treeIn, searchNode){
 		
 		console.log(childIn.getHtml().toUpperCase());
 		var childName = childIn.getHtml().toUpperCase();
-		if(childName == "SEARCH" || childName == "VARIABLES" || childName == "FUNCTIONS") continue;	
+//		if(childName == "SEARCH" || childName == "VARIABLES" || childName == "FUNCTIONS") continue;	
 		
 		if(childIn.blocks && childIn.blocks.length > 0){
 			console.log("Length of block array" + childIn.blocks.length);
 			for (var j = 0; j < childIn.blocks.length; j++) {
+				if(typeof childIn.blocks[j] == "string") continue;
 				searchNode.blocks.push(childIn.blocks[j]);
 				console.log("Pushed " + childIn.blocks[j]);
 			}
