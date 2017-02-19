@@ -69,11 +69,12 @@ Blockly.Search.addSearchBlocks = function(treeIn, searchNode){
 		
 		console.log(childIn.getHtml().toUpperCase());
 		var childName = childIn.getHtml().toUpperCase();
-		if(childName == "SEARCH" || childName == "VARIABLES" || childName == "FUNCTIONS") continue;	
+//		if(childName == "SEARCH" || childName == "VARIABLES" || childName == "FUNCTIONS") continue;	
 		
 		if(childIn.blocks && childIn.blocks.length > 0){
 			console.log("Length of block array" + childIn.blocks.length);
 			for (var j = 0; j < childIn.blocks.length; j++) {
+				if(typeof childIn.blocks[j] == "string") continue;
 				searchNode.blocks.push(childIn.blocks[j]);
 				console.log("Pushed " + childIn.blocks[j]);
 			}
@@ -83,7 +84,7 @@ Blockly.Search.addSearchBlocks = function(treeIn, searchNode){
 };
 
 /**Find node for SEARCH category*/
-Blockly.Search.flyoutCategory = function(node, workspace) {
+Blockly.Search.flyoutCategory = function(node, flyoutWorkspace, workspace) {
 /*    var treeIn = node.getParent();
 	var searchNode = {};
 	for (var i = 0; i < treeIn.getChildren().length; i++) {
@@ -104,10 +105,8 @@ Blockly.Search.flyoutCategory = function(node, workspace) {
 	var treeIn = node.getParent();
 	var searchNode = {};
 	for (var i = 0; i < treeIn.getChildren().length; i++) {
-		console.log("Hello " + treeIn.getChildren()[i].getHtml().toUpperCase());
 		if ((treeIn.getChildren()[i].getHtml().toUpperCase()) == "SEARCH"){
 			searchNode = treeIn.getChildren()[i];
-			console.log("Condition is true");
 			break;
 		}
 	}
@@ -118,6 +117,8 @@ Blockly.Search.flyoutCategory = function(node, workspace) {
 		console.log(searchNode.blocks[i] + " " + i);
 		if(searchNode.blocks[i].tagName) console.log(searchNode.blocks[i].tagName);
 	}
+	var newArray = searchNode.blocks.concat(Blockly.Variables.flyoutCategory(workspace));
+        searchNode.blocks = newArray.concat(Blockly.Procedures.flyoutCategory(workspace));
 	
 	var allBlocks = [];
 	
@@ -126,9 +127,10 @@ Blockly.Search.flyoutCategory = function(node, workspace) {
 			var tagName = searchNode.blocks[i].tagName.toUpperCase();
 		console.log(tagName + " " + i);
 		if(tagName == 'BLOCK')
-			allBlocks.push(Blockly.Xml.domToInvisibleBlock(searchNode.blocks[i],workspace));
+			allBlocks.push(Blockly.Xml.domToInvisibleBlock(searchNode.blocks[i], flyoutWorkspace));
 	}
 		
+        
 	var foundBlocks = [];
         foundBlocks.push(this.button);
 	console.log("Test");
@@ -141,6 +143,7 @@ Blockly.Search.flyoutCategory = function(node, workspace) {
             }
             this.activeSearch = false;
         }
+        flyoutWorkspace.clear();
 	return foundBlocks;
 };
 
