@@ -479,6 +479,64 @@ Blockly.Workspace.prototype.getBlockById = function(id) {
 };
 
 /**
+ * Array of search results from calling Workspace.searchBlocksByKeywords().
+ * @type {!Array.<!Blockly.Block>}
+ */
+Blockly.Workspace.prototype.searchResults = [];
+
+/**
+ * Variable for indexing through Workspace.searchResults.
+ * @type {number}
+ */
+Blockly.Workspace.prototype.searchResultIndex = -1;
+
+/**
+ * Search for a block in the workspace using one or more keywords.
+ * Uses the Block.search() function on each block.
+ * @param {!Array.<string>} keywords Array of keywords to search for
+ * @return {!Array.<!Blockly.Block>} Array of blocks containing the keywords
+ */
+Blockly.Workspace.prototype.searchBlocksByKeywords = function(keywords) {
+  var results = [];
+  var blocks = this.getAllBlocks();
+
+  // Iterate through every block in the workspace.
+  for(var i = 0; i < blocks.length; i++) {
+    // If the current block contains all of the keywords searched for...
+    if(blocks[i].search(keywords)) {
+      results.push(blocks[i]);
+    }
+  }
+
+  this.searchResults = results;
+  this.searchResultIndex = -1;
+  return results;
+};
+
+/**
+ * Scrolls to and selects the next Block in the Workspace.searchResults array.
+ * @return {Blockly.Block|null} Next block in Workspace.searchResults()
+ * OR first block if the last block has already been returned
+ * OR null if the array is empty.
+ */
+Blockly.Workspace.prototype.nextSearchResult = function() {
+  if (this.searchResults.length === 0)
+    return null;
+
+  if (++this.searchResultIndex >= this.searchResults.length)
+    this.searchResultIndex = 0;
+
+  var currentBlock = this.searchResults[this.searchResultIndex];
+
+  currentBlock.select();
+  var x = currentBlock.getRelativeToSurfaceXY().x;
+  var y = currentBlock.getRelativeToSurfaceXY().y;
+  this.scrollbar.set(x,y);
+
+  return currentBlock;
+}
+
+/**
  * Database of all workspaces.
  * @private
  */
