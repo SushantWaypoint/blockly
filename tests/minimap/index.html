@@ -132,7 +132,8 @@
                     var slaveWorkspace = Blockly.inject('slaveDiv',
                         {
                             media: '../../media/',
-                            readOnly: true
+                            readOnly: true,
+							searchbox: true
                         });
                     // Listen to events on master workspace.
                     masterWorkspace.addChangeListener(mirrorEvent);
