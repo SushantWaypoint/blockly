@@ -44,6 +44,7 @@ Blockly.Options = function(options) {
     var hasComments = false;
     var hasDisable = false;
     var hasSounds = false;
+	if(options['searchbox']) var hasSearchbox = true;
   } else {
     var languageTree = Blockly.Options.parseToolboxTree(options['toolbox']);
     var hasCategories = Boolean(languageTree &&
@@ -68,6 +69,7 @@ Blockly.Options = function(options) {
     if (hasSounds === undefined) {
       hasSounds = true;
     }
+	var hasSearchbox = false;
   }
   var rtl = !!options['rtl'];
   var horizontalLayout = options['horizontalLayout'];
@@ -128,6 +130,8 @@ Blockly.Options = function(options) {
   this.gridOptions = Blockly.Options.parseGridOptions_(options);
   this.zoomOptions = Blockly.Options.parseZoomOptions_(options);
   this.toolboxPosition = toolboxPosition;
+  
+  this.hasSearchbox = hasSearchbox;
 };
 
 /**

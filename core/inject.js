@@ -56,6 +56,7 @@ Blockly.inject = function(container, opt_options) {
   var subContainer = goog.dom.createDom('div', 'injectionDiv');
   container.appendChild(subContainer);
   var svg = Blockly.createDom_(subContainer, options);
+  console.log(svg);
 
   // Create surfaces for dragging things. These are optimizations
   // so that the broowser does not repaint during the drag.

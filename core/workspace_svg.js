@@ -372,6 +372,9 @@ Blockly.WorkspaceSvg.prototype.createDom = function(opt_backgroundClass) {
      */
     this.toolbox_ = new Blockly.Toolbox(this);
   }
+  if (this.options.hasSearchbox){
+	this.addSearchbox_();
+  }
   this.updateGridPattern_();
   this.recordDeleteAreas();
   return this.svgGroup_;
@@ -461,6 +464,13 @@ Blockly.WorkspaceSvg.prototype.addZoomControls_ = function(bottom) {
   this.svgGroup_.appendChild(svgZoomControls);
   return this.zoomControls_.init(bottom);
 };
+
+Blockly.WorkspaceSvg.prototype.addSearchbox_ = function(){
+	this.searchbox_ = new Blockly.Searchbox();
+	this.searchbox_.init(this);
+	var svgSearchbox = this.searchbox_.createDom();
+	this.svgGroup_.insertBefore(svgSearchbox, this.svgBlockCanvas_);
+}
 
 /**
  * Add a flyout element in an element with the given tag name.
