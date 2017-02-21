@@ -568,7 +568,7 @@ Blockly.Workspace.prototype.prevSearchResult = function() {
   if (this.scrollbar !== null) {
     this.scrollbar.set(x,y);
   }
-  
+
   return currentBlock;
 }
 
@@ -581,6 +581,7 @@ Blockly.Workspace.prototype.minimapSearch = function(keywords){
     if(!(blocks[i].search(keywords))) {
       blocks[i].setDisabled(true);
     }
+    else blocks[i].setDisabled(false);
   }
 };
 
