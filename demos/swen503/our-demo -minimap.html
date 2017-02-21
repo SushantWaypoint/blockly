@@ -66,11 +66,11 @@
             <div id="slaveDiv"
             style="height: 1000px;
             width: 2000px;
-            -webkit-transform: scale(.2);
-            -moz-transform: scale(.2);
-            transform: scale(.2); 
+            -webkit-transform: scale(.3);
+            -moz-transform: scale(.3);
+            transform: scale(0.3); 
             position:fixed;
-            bottom:-5%;
+            bottom:-40%;
             left:4%;
             z-index:99;
             border: 5px solid red;
@@ -409,7 +409,8 @@
             var slaveWorkspace = Blockly.inject('slaveDiv',
                 {
                     media: '../../media/',
-                    readOnly: true
+                    readOnly: true,
+                    searchbox: true
                 });
             // Listen to events on master workspace.
             masterWorkspace.addChangeListener(mirrorEvent);

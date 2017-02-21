@@ -38,6 +38,7 @@ goog.require('Blockly.Workspace');
 goog.require('Blockly.WorkspaceDragSurfaceSvg');
 goog.require('Blockly.Xml');
 goog.require('Blockly.ZoomControls');
+goog.require('Blockly.Searchbox');
 
 goog.require('goog.array');
 goog.require('goog.dom');
@@ -372,9 +373,9 @@ Blockly.WorkspaceSvg.prototype.createDom = function(opt_backgroundClass) {
      */
     this.toolbox_ = new Blockly.Toolbox(this);
   }
-  if (this.options.hasSearchbox){
+ // if (this.options.hasSearchbox){
 	this.addSearchbox_();
-  }
+ // }
   this.updateGridPattern_();
   this.recordDeleteAreas();
   return this.svgGroup_;
@@ -466,10 +467,11 @@ Blockly.WorkspaceSvg.prototype.addZoomControls_ = function(bottom) {
 };
 
 Blockly.WorkspaceSvg.prototype.addSearchbox_ = function(){
-	this.searchbox_ = new Blockly.Searchbox();
-	this.searchbox_.init(this);
-	var svgSearchbox = this.searchbox_.createDom();
+	var button = Blockly.Searchbox.init(this);
+	var svgSearchbox = Blockly.Searchbox.createDom();
 	this.svgGroup_.insertBefore(svgSearchbox, this.svgBlockCanvas_);
+        console.log(this.svgGroup_);
+        
 }
 
 /**
