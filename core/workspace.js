@@ -535,7 +535,11 @@ Blockly.Workspace.prototype.nextSearchResult = function() {
   currentBlock.select();
   var x = currentBlock.getRelativeToSurfaceXY().x;
   var y = currentBlock.getRelativeToSurfaceXY().y;
-  this.scrollbar.set(x,y);
+
+  if (this.scrollbar !== null) {
+    this.scrollbar.set(x,y);
+  }
+
 
   return currentBlock;
 }
@@ -560,8 +564,11 @@ Blockly.Workspace.prototype.prevSearchResult = function() {
   currentBlock.select();
   var x = currentBlock.getRelativeToSurfaceXY().x;
   var y = currentBlock.getRelativeToSurfaceXY().y;
-  this.scrollbar.set(x,y);
 
+  if (this.scrollbar !== null) {
+    this.scrollbar.set(x,y);
+  }
+  
   return currentBlock;
 }
 
