@@ -164,15 +164,18 @@ Blockly.Block = function(workspace, prototypeName, opt_id) {
 
 /**
  * Search for the given keywords in the block's tooltip and fields.
- * @param {!Array.<string>} searchTerms Array of keywords to search for.
+ * @param {!Array.<string>|string} searchTerms Array of keywords to search for,
+ *     or single string with keywords separated by spaces.
  * @return {boolean} True if all keywords in searchTerms were found in block.
  */
-Blockly.Block.prototype.search = function(searchTerms){
-	//searchTerms = searchTerms.trim().toLowerCase();
-	//var words = searchTerms.split(" ");
-  var words = searchTerms;
-	var blockText = "";
+Blockly.Block.prototype.search = function(searchTerms) {
+  // If searchTerms is a string, convert to an array of strings.
+  if (searchTerms instanceof String) {
+    searchTerms = searchTerms.trim().toLowerCase();
+    searchTerms = searchTerms.split(' ');
+  }
 
+	var blockText = '';
 	blockText += this.type.toLowerCase();
 
   // Append this block's tooltip to blockText.
@@ -193,31 +196,27 @@ Blockly.Block.prototype.search = function(searchTerms){
 
   //
 	for (var i = 0, input; input = this.inputList[i]; i++) {
-		if (typeof input.name != "undefined")
-			blockText += " " + input.name.toLowerCase();
+		if (typeof input.name != 'undefined') {
+			blockText += ' ' + input.name.toLowerCase();
+    }
 
 		for (var j = 0, field; field = input.fieldRow[j]; j++) {
-			if (typeof field.name != "undefined")
-				blockText += " " + field.name.toLowerCase();
+			if (typeof field.name != 'undefined') {
+				blockText += ' ' + field.name.toLowerCase();
+      }
 
-			blockText += " " + field.getText().toLowerCase();
-			//console.log("Name: " + field.name);
-			//console.log("Text: " + field.getText());
+			blockText += ' ' + field.getText().toLowerCase();
 
-			if (!(field instanceof Blockly.FieldImage))
-				blockText += " " + field.getValue().toLowerCase();
-				//console.log("Value: " + field.getValue());
+			if (!(field instanceof Blockly.FieldImage)) {
+				blockText += ' ' + field.getValue().toLowerCase();
+      }
 		}
 	}
 
-	//console.log("blocktext: "+blockText);
-
   var result = true;
-	for(var i = 0; i < words.length; i++){
-		result = result && blockText.includes(words[i]);
-		//console.log("Contains '" + words[i] + "': " + blockText.includes(words[i]));
+	for (var i = 0; i < searchTerms.length; i++) {
+		result = result && blockText.includes(searchTerms[i]);
 	}
-	//console.log("Final result: " + result);
 
   return result;
 };
