@@ -572,6 +572,25 @@ Blockly.Workspace.prototype.prevSearchResult = function() {
   return currentBlock;
 }
 
+Blockly.Workspace.prototype.minimapSearch = function(keywords){
+	var blocks = this.getAllBlocks();
+
+  // Iterate through every block in the workspace.
+	for(var i = 0; i < blocks.length; i++) {
+    // If the current block contains all of the keywords searched for...
+    if(!(blocks[i].search(keywords))) {
+      blocks[i].setDisabled(true);
+    }
+  }
+};
+
+Blockly.Workspace.prototype.clearMinimapSearch = function(){
+	var blocks = this.getAllBlocks();
+	for(var i = 0; i < blocks.length; i++){
+		blocks[i].setDisabled(false);
+	}
+};
+
 /**
  * Database of all workspaces.
  * @private
