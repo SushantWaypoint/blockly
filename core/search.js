@@ -19,21 +19,19 @@
  */
 
 /**
- * @fileoverview Utility functions for handling procedures.
- * @author fraser@google.com (Neil Fraser)
+ * @fileoverview Utility functions for handling searches within the Toolbox.
+ * @author oliverbmwilson@gmail.com 
+ * @author deborahcrook01.gmail.com 
+ * @author raissa.north@gmail.com 
+ * @author mikesolvalou@gmail.com 
+ * @author johncarlo.initeractive@gmail.com
  */
 'use strict';
 
 goog.provide('Blockly.Search');
 
-goog.require('Blockly.Blocks');
-goog.require('Blockly.Field');
-goog.require('Blockly.Names');
 goog.require('Blockly.Workspace');
 goog.require('Blockly.Toolbox');
-goog.require('goog.ui.tree.TreeNode');
-goog.require('goog.ui.tree.TreeControl');
-
 
 /**
  * Category to separate procedure names from variables and generated functions.
@@ -43,9 +41,7 @@ Blockly.Search.SEARCH_TERMS = [];
 Blockly.Search.button = {};
 Blockly.Search.activeSearch = false;
 
-Blockly.Search.init = function(workspace, toolbox){	
-	console.log("Test");
-        
+Blockly.Search.init = function(workspace, toolbox){	        
         //create search button
         this.button = goog.dom.createDom('button');
         this.button.setAttribute('text', "Search...");
@@ -53,7 +49,6 @@ Blockly.Search.init = function(workspace, toolbox){
 
         workspace.registerButtonCallback('START_SEARCH', function(button) {
                 var searchTerm = Blockly.Search.startSearch(button.getTargetWorkspace());
-                console.log("Search Term: " + searchTerm);
                 if(searchTerm) {
                     Blockly.Search.setSearchTerms(searchTerm);
                     toolbox.refreshSelection();
@@ -61,22 +56,21 @@ Blockly.Search.init = function(workspace, toolbox){
         });
 };
 
-/**Go through tree recursively and add blocks to the searchNode*/
+/**
+ * Go through tree recursively and add blocks to the searchNode
+ */
 Blockly.Search.addSearchBlocks = function(treeIn, searchNode){
 	if(!treeIn.hasChildren()) return;
 	for(var i = 0; i < treeIn.getChildren().length; i++){
 		var childIn = treeIn.getChildren()[i];
 		
-		console.log(childIn.getHtml().toUpperCase());
 		var childName = childIn.getHtml().toUpperCase();
 //		if(childName == "SEARCH" || childName == "VARIABLES" || childName == "FUNCTIONS") continue;	
 		
 		if(childIn.blocks && childIn.blocks.length > 0){
-			console.log("Length of block array" + childIn.blocks.length);
 			for (var j = 0; j < childIn.blocks.length; j++) {
 				if(typeof childIn.blocks[j] == "string") continue;
 				searchNode.blocks.push(childIn.blocks[j]);
-				console.log("Pushed " + childIn.blocks[j]);
 			}
 		}
 		this.addSearchBlocks(childIn, searchNode);
