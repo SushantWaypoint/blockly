@@ -572,6 +572,12 @@ Blockly.Workspace.prototype.prevSearchResult = function() {
   return currentBlock;
 }
 
+/**
+ * Disable every block in the workspace that is not a search hit for the given
+ * keywords. This function is intended to highlight search hits by disabling
+ * every other block.
+ * @param {!Array.<string>} keywords Array of keywords to search for
+ */
 Blockly.Workspace.prototype.minimapSearch = function(keywords){
 	var blocks = this.getAllBlocks();
 
@@ -585,6 +591,9 @@ Blockly.Workspace.prototype.minimapSearch = function(keywords){
   }
 };
 
+/**
+ * Enable every block in the workspace.
+ */
 Blockly.Workspace.prototype.clearMinimapSearch = function(){
 	var blocks = this.getAllBlocks();
 	for(var i = 0; i < blocks.length; i++){
