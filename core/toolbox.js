@@ -278,6 +278,7 @@ Blockly.Toolbox.prototype.populate_ = function(newTree) {
   this.hasColours_ = false;
   var openNode =
     this.syncTrees_(newTree, this.tree_, this.workspace_.options.pathToMedia);
+
   if (this.tree_.blocks.length) {
     throw 'Toolbox cannot have both blocks and categories in the root level.';
   }
@@ -296,12 +297,6 @@ Blockly.Toolbox.prototype.populate_ = function(newTree) {
  * @private
  */
 Blockly.Toolbox.prototype.syncTrees_ = function(treeIn, treeOut, pathToMedia) {
-//	for(var i = 0, childIn; childIn = treeIn.childNodes[i]; i++) {
-//		if(childIn.tagName) {
-//			if(childIn.tagName.toUpperCase() == 'BLOCK') {
-//			}
-//		}
-//	}
   var openNode = null;
   var lastElement = null;
   for (var i = 0, childIn; childIn = treeIn.childNodes[i]; i++) {
@@ -324,7 +319,6 @@ Blockly.Toolbox.prototype.syncTrees_ = function(treeIn, treeOut, pathToMedia) {
             openNode = newOpenNode;
           }
         }
-
         var colour = childIn.getAttribute('colour');
         if (goog.isString(colour)) {
           if (colour.match(/^#[0-9a-fA-F]{6}$/)) {
