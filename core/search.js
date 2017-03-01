@@ -41,7 +41,8 @@ Blockly.Search.SEARCH_TERMS = [];
 Blockly.Search.button = {};
 Blockly.Search.activeSearch = false;
 
-Blockly.Search.init = function(workspace, toolbox){	        
+Blockly.Search.init = function(workspace, toolbox){	     
+        
         //create search button
         this.button = goog.dom.createDom('button');
         this.button.setAttribute('text', "Search...");
@@ -65,7 +66,6 @@ Blockly.Search.addSearchBlocks = function(treeIn, searchNode){
 		var childIn = treeIn.getChildren()[i];
 		
 		var childName = childIn.getHtml().toUpperCase();
-//		if(childName == "SEARCH" || childName == "VARIABLES" || childName == "FUNCTIONS") continue;	
 		
 		if(childIn.blocks && childIn.blocks.length > 0){
 			for (var j = 0; j < childIn.blocks.length; j++) {
@@ -79,23 +79,6 @@ Blockly.Search.addSearchBlocks = function(treeIn, searchNode){
 
 /**Find node for SEARCH category*/
 Blockly.Search.flyoutCategory = function(node, flyoutWorkspace, workspace) {
-/*    var treeIn = node.getParent();
-	var searchNode = {};
-	for (var i = 0; i < treeIn.getChildren().length; i++) {
-		console.log("Hello " + treeIn.getChildren()[i].getHtml().toUpperCase());
-		if ((treeIn.getChildren()[i].getHtml().toUpperCase()) == "SEARCH"){
-			searchNode = treeIn.getChildren()[i];
-			console.log("Condition is true");
-			break;
-		}
-	}
-	
-    searchNode.blocks = [];
-    });
-    
-  searchNode.blocks.push(button);
-	this.addSearchBlocks(treeIn,searchNode);
-        return searchNode.blocks;*/
 	var treeIn = node.getParent();
 	var searchNode = {};
 	for (var i = 0; i < treeIn.getChildren().length; i++) {
@@ -106,9 +89,7 @@ Blockly.Search.flyoutCategory = function(node, flyoutWorkspace, workspace) {
 	}
 	searchNode.blocks = [];
 	this.addSearchBlocks(treeIn,searchNode);
-	console.log(searchNode.blocks.length);
 	for(var i = 0; i < searchNode.blocks.length; i++){
-		console.log(searchNode.blocks[i] + " " + i);
 		if(searchNode.blocks[i].tagName) console.log(searchNode.blocks[i].tagName);
 	}
 	var newArray = searchNode.blocks.concat(Blockly.Variables.flyoutCategory(workspace));
@@ -119,7 +100,6 @@ Blockly.Search.flyoutCategory = function(node, flyoutWorkspace, workspace) {
 	for(var i = 0; i < searchNode.blocks.length; i++){
 		if(searchNode.blocks[i].tagName)
 			var tagName = searchNode.blocks[i].tagName.toUpperCase();
-		console.log(tagName + " " + i);
 		if(tagName == 'BLOCK')
 			allBlocks.push(Blockly.Xml.domToInvisibleBlock(searchNode.blocks[i], flyoutWorkspace));
 	}
@@ -127,7 +107,6 @@ Blockly.Search.flyoutCategory = function(node, flyoutWorkspace, workspace) {
         
 	var foundBlocks = [];
         foundBlocks.push(this.button);
-	console.log("Test");
 	
         if(this.activeSearch){
             for(var i = 0; i < allBlocks.length; i++){
