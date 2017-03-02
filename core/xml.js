@@ -383,7 +383,9 @@ Blockly.Xml.domToBlock = function(xmlBlock, workspace) {
   return topBlock;
 };
 
-/**Make an invisible block (for search method)*/
+/**
+ * Make an invisible block (for search method).
+ */
 Blockly.Xml.domToInvisibleBlock = function(xmlBlock, workspace) {
   // Create top-level block.
   Blockly.Events.disable();
