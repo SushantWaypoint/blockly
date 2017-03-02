@@ -719,14 +719,15 @@ Blockly.Flyout.prototype.hide = function() {
 
 /**
  * Show and populate the flyout.
- * @param {!Array|string} xmlList List of blocks to show.
+ * @param {!Array|string|goog.ui.tree.TreeNode} node List of blocks to show
+ *     or selected node.
  *     Variables and procedures have a custom set of blocks.
  */
 Blockly.Flyout.prototype.show = function(node) {
-var xmlList = node;
-    if(node instanceof goog.ui.tree.TreeNode) {
+  var xmlList = node;
+  if(node instanceof goog.ui.tree.TreeNode) {
     xmlList = node.blocks;
-    }
+  }
   this.workspace_.setResizesEnabled(false);
   this.hide();
   this.clearOldBlocks_();
