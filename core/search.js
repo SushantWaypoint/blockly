@@ -49,7 +49,7 @@ Blockly.Search.button = {};
 Blockly.Search.init = function(workspace, toolbox){	     
         
   this.button = goog.dom.createDom('button');
-  this.button.setAttribute('text', 'Msg.SEARCH');
+  this.button.setAttribute('text', Blockly.Msg.SEARCH);
   this.button.setAttribute('callbackKey', 'START_SEARCH');
 
   workspace.registerButtonCallback('START_SEARCH', function(button) {
@@ -135,7 +135,7 @@ Blockly.Search.flyoutCategory = function(node, flyoutWorkspace, workspace) {
  * @return {String} The search text.
  */
 Blockly.Search.startSearch = function(workspace) {
-  var text = window.prompt('Msg.SEARCH_TITLE', '');
+  var text = window.prompt(Blockly.Msg.SEARCH_TITLE, '');
   if(text) {
     return text;
   }
