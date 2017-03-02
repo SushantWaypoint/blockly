@@ -502,14 +502,11 @@ Blockly.Workspace.prototype.searchBlocksByKeywords = function(keywords) {
   var results = [];
   var blocks = this.getAllBlocks();
 
-  // Iterate through every block in the workspace.
   for(var i = 0; i < blocks.length; i++) {
-    // If the current block contains all of the keywords searched for...
     if(blocks[i].search(keywords)) {
       results.push(blocks[i]);
     }
   }
-
   this.searchResults_ = results;
   this.searchResultIndex_ = -1;
   return results;
@@ -540,9 +537,8 @@ Blockly.Workspace.prototype.nextSearchResult = function() {
     this.scrollbar.set(x,y);
   }
 
-
   return currentBlock;
-}
+};
 
 /**
  * Scrolls to and selects previous Block in the Workspace.searchResults array.
@@ -570,24 +566,24 @@ Blockly.Workspace.prototype.prevSearchResult = function() {
   }
 
   return currentBlock;
-}
+};
 
 /**
  * Disable every block in the workspace that is not a search hit for the given
  * keywords. This function is intended to highlight search hits by disabling
- * every other block.
+ * every unwanted block.
  * @param {!Array.<string>} keywords Array of keywords to search for
  */
 Blockly.Workspace.prototype.minimapSearch = function(keywords){
-	var blocks = this.getAllBlocks();
+  var blocks = this.getAllBlocks();
 
-  // Iterate through every block in the workspace.
-	for(var i = 0; i < blocks.length; i++) {
-    // If the current block contains all of the keywords searched for...
+  for(var i = 0; i < blocks.length; i++) {
     if(!(blocks[i].search(keywords))) {
       blocks[i].setDisabled(true);
     }
-    else blocks[i].setDisabled(false);
+    else {
+	  blocks[i].setDisabled(false);
+	}
   }
 };
 
@@ -595,10 +591,10 @@ Blockly.Workspace.prototype.minimapSearch = function(keywords){
  * Enable every block in the workspace.
  */
 Blockly.Workspace.prototype.clearMinimapSearch = function(){
-	var blocks = this.getAllBlocks();
-	for(var i = 0; i < blocks.length; i++){
-		blocks[i].setDisabled(false);
-	}
+  var blocks = this.getAllBlocks();
+  for(var i = 0; i < blocks.length; i++){
+    blocks[i].setDisabled(false);
+  }
 };
 
 /**
